@@ -4,6 +4,7 @@ import model
 
 import numpy as np
 from keras.preprocessing.sequence import pad_sequences
+from keras.callbacks import ModelCheckpoint
 from sklearn.model_selection import train_test_split
 
 
@@ -29,8 +30,14 @@ def train():
 
     seq_model = model.get_compiled_model(embeddings_matrix, 100)
 
+    checkpoint_file_path = "../checkpoints/weights-improvement-{epoch:02d}-{val_accuracy:.2f}.hdf5"
+    checkpoint = ModelCheckpoint(
+        checkpoint_file_path, monitor='val_accuracy', verbose=1, save_best_only=True, mode='max')
+    callbacks_list = [checkpoint]
+
     seq_model.fit(texts_train, labels_train, validation_data=(texts_test, labels_test),
                   batch_size=32, epochs=16,
+                  callbacks=callbacks_list,
                   verbose=1)
 
     performance = seq_model.evaluate(texts_test, labels_test)
