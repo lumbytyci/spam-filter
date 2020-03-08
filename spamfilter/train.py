@@ -27,7 +27,14 @@ def train():
     embeddings_matrix = prepare.map_embeddings_to_word_index(
         word_embeddings, tokenizer.word_index)
 
-    model.get_compiled_model(embeddings_matrix, 100)
+    seq_model = model.get_compiled_model(embeddings_matrix, 100)
+
+    seq_model.fit(texts_train, labels_train, validation_data=(texts_test, labels_test),
+                  batch_size=32, epochs=16,
+                  verbose=1)
+
+    performance = seq_model.evaluate(texts_test, labels_test)
+    print(performance)
 
 
 if __name__ == "__main__":
