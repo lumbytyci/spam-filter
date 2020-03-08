@@ -1,4 +1,5 @@
 import numpy as np
+import tqdm
 
 
 def load_data_from_file(path: str) -> tuple:
@@ -14,7 +15,7 @@ def load_data_from_file(path: str) -> tuple:
     with open(path, 'r') as spam_collection_file:
         labels = []
         emails = []
-        for line in spam_collection_file:
+        for line in tqdm.tqdm(spam_collection_file, "Reading corpus"):
             label, email = line.strip().split(maxsplit=1)
             labels.append(label.strip())
             emails.append(email.strip())
@@ -34,7 +35,7 @@ def load_word_embeddings_from_file(path: str) -> dict:
 
     word_embeddings = {}
     with open(path, 'r', encoding='utf8') as word_embeddings_file:
-        for line in word_embeddings_file:
+        for line in tqdm.tqdm(word_embeddings_file, "Reading word embeddings"):
             word, *vector = line.split()
             vector = np.asarray(vector, dtype='float32')
             word_embeddings[word] = vector
