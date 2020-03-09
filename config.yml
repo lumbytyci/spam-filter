@@ -1,0 +1,16 @@
+dataset:
+    test_size: 0.25
+    random_state: 10
+    max_seq_len: 100
+
+train:
+    epochs: 16
+    batch_size: 32
+
+embedding:
+    num_nodes: 100
+    input_len: 100
+
+lstm:
+    num_units: 128
+

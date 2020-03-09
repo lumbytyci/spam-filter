@@ -1,16 +1,19 @@
+import prepare
+
 from keras.models import Sequential
 from keras.layers import LSTM, Embedding, Dense, Dropout
 
 
-def get_compiled_model(embeddings_matrix: dict, num_lstm_units):
+def get_compiled_model(embeddings_matrix: dict, config: dict) -> Sequential:
+
     model = Sequential()
     embedding_layer = Embedding(len(embeddings_matrix),
-                                100,
+                                config['embedding']['num_nodes'],
                                 trainable=False,
-                                input_length=100,
+                                input_length=config['embedding']['input_len'],
                                 weights=[embeddings_matrix])
 
-    lstm_layer = LSTM(num_lstm_units, recurrent_dropout=0.2)
+    lstm_layer = LSTM(config['lstm']['num_units'], recurrent_dropout=0.2)
 
     dropout_layer = Dropout(0.3)
 
@@ -25,6 +28,8 @@ def get_compiled_model(embeddings_matrix: dict, num_lstm_units):
                   optimizer='rmsprop',
                   metrics=['accuracy'])
 
-    model.summary()
-
     return model
+
+
+if __name__ == "__main__":
+    get_compiled_model(None)

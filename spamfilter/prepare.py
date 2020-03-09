@@ -1,4 +1,5 @@
 import numpy as np
+import yaml
 from keras.preprocessing.text import Tokenizer
 
 
@@ -29,6 +30,11 @@ def encode_labels(labels: list) -> list:
             encoded_labels.append([0.0, 1.0])
 
     return encoded_labels
+
+
+def load_model_config(path: str):
+    with open(path) as config_file:
+        return yaml.load(config_file, Loader=yaml.FullLoader)
 
 
 if __name__ == "__main__":
