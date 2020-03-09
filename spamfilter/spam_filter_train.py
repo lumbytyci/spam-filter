@@ -1,5 +1,6 @@
 import prepare
 import model
+import train
 import data_loader as dl
 
 import numpy as np
@@ -25,13 +26,16 @@ def spam_filter():
 
     texts_train, texts_test, labels_train, labels_test = train_test_split(
         texts, labels, random_state=config['dataset']['random_state'],
-        test_size=config['dataset']['random_state'])
+        test_size=config['dataset']['test_size'])
 
     embeddings_matrix = prepare.map_embeddings_to_word_index(
         word_embeddings, tokenizer.word_index)
 
     seq_model = model.get_compiled_model(embeddings_matrix, config)
     seq_model.summary()
+
+    train.train_model(seq_model, config, texts_train,
+                      labels_train, texts_test, labels_test)
 
 
 if __name__ == "__main__":
