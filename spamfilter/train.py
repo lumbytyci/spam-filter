@@ -21,4 +21,5 @@ def train_model(seq_model, config: dict, X_train, y_train, X_test, y_test, save=
                   callbacks=callbacks,
                   verbose=1)
 
-    # performance = seq_model.evaluate(X_test, y_test)
+    performance = seq_model.evaluate(X_test, y_test)
+    print(performance)
