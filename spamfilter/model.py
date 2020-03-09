@@ -29,7 +29,3 @@ def get_compiled_model(embeddings_matrix: dict, config: dict) -> Sequential:
                   metrics=['accuracy'])
 
     return model
-
-
-if __name__ == "__main__":
-    get_compiled_model(None)
