@@ -13,9 +13,10 @@ def get_compiled_model(embeddings_matrix: dict, config: dict) -> Sequential:
                                 input_length=config['embedding']['input_len'],
                                 weights=[embeddings_matrix])
 
-    lstm_layer = LSTM(config['lstm']['num_units'], recurrent_dropout=0.2)
+    lstm_layer = LSTM(config['lstm']['num_units'],
+                      recurrent_dropout=config['lstm']['dropout'])
 
-    dropout_layer = Dropout(0.3)
+    dropout_layer = Dropout(config['dropout']['val'])
 
     dense_layer = Dense(2, activation="softmax")
 

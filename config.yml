@@ -11,6 +11,10 @@ embedding:
     num_nodes: 100
     input_len: 100
 
+dropout:
+    val: 0.3
+
 lstm:
     num_units: 128
+    dropout: 0.2
 
