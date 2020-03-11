@@ -1,3 +1,4 @@
+import argparse
 import prepare
 import model
 import train
@@ -11,12 +12,16 @@ config = prepare.load_model_config('../config.yml')
 dataset_path = '../data/collections/spam-corpus'
 word_emb_path = '../data/word-embeddings/glove.6B.100d.txt'
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-w', metavar='W', type=str, nargs=1,
+                    default='', help='path to hdf5 file with weights')
+
 
 def get_prediction(seq_model, tokenizer, text):
     seq = tokenizer.texts_to_sequences([text])
     seq = pad_sequences(seq, maxlen=100)
     prediction = seq_model.predict(seq)[0]
-    print(prediction)
+    return prediction
 
 
 def load_weights_from_file(path: str, seq_model, X_test, y_test):
@@ -56,6 +61,12 @@ def spam_filter(train_mode: bool):
         load_weights_from_file(
             '../checkpoints/weights-improvement-12-0.98.hdf5', seq_model, texts_test, labels_test)
 
+        while True:
+            text = str(input('>>'))
+            print(get_prediction(seq_model, tokenizer, text))
+
 
 if __name__ == "__main__":
-    spam_filter(train_mode=False)
+    args = parser.parse_args()
+    path_to_weights_file = args.w
+    spam_filter(train_mode=(path_to_weights_file == ""))
