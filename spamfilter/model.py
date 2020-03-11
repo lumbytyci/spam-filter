@@ -2,6 +2,7 @@ import prepare
 
 from keras.models import Sequential
 from keras.layers import LSTM, Embedding, Dense, Dropout
+from keras.optimizers import RMSprop
 
 
 def get_compiled_model(embeddings_matrix: dict, config: dict) -> Sequential:
@@ -20,13 +21,15 @@ def get_compiled_model(embeddings_matrix: dict, config: dict) -> Sequential:
 
     dense_layer = Dense(2, activation="softmax")
 
+    rmsprop = RMSprop(learning_rate=0.001, rho=0.9)
+
     model.add(embedding_layer)
     model.add(lstm_layer)
     model.add(dropout_layer)
     model.add(dense_layer)
 
     model.compile(loss='categorical_crossentropy',
-                  optimizer='rmsprop',
+                  optimizer=rmsprop,
                   metrics=['accuracy'])
 
     return model
