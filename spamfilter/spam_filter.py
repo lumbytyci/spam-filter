@@ -1,7 +1,10 @@
+import math
 import argparse
+
 import prepare
 import model
 import train
+import utils
 import data_loader as dl
 
 import numpy as np
@@ -55,15 +58,23 @@ def spam_filter(train_mode: bool):
     seq_model.summary()
 
     if train_mode:
+        print("Entering train mode")
         train.train_model(seq_model, config, texts_train,
                           labels_train, texts_test, labels_test)
     else:
+        print("Loading weights file and entering prediction mode")
         load_weights_from_file(
             '../checkpoints/weights-improvement-12-0.98.hdf5', seq_model, texts_test, labels_test)
 
         while True:
-            text = str(input('>>'))
-            print(get_prediction(seq_model, tokenizer, text))
+            try:
+                text = str(input('>> '))
+                prediction = get_prediction(seq_model, tokenizer, text)
+                prediction_index = utils.probability_to_index(prediction)
+                print("Prediction:", utils.decode_index(prediction_index))
+            except (KeyboardInterrupt, KeyError):
+                print()
+                exit()
 
 
 if __name__ == "__main__":
