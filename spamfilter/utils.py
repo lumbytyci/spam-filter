@@ -3,5 +3,4 @@ def decode_index(index: int) -> str:
 
 
 def probability_to_index(prediction: list) -> int:
-    prob_to_int = list(map(round, prediction))
-    return prob_to_int.index(max(prob_to_int))
+    return 0 if prediction[0] > prediction[1] else 1
