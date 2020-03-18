@@ -14,16 +14,19 @@ def forge_header(header: dict) -> str:
     return ':'.join(map(str, header.values()))
 
 
+def matches_difficulty(digest: int, difficulty: int) -> bool:
+    return not (digest & (pow(2, difficulty) - 1))
+
+
 def do_work(header: dict, difficulty: int) -> str:
     print(forge_header(header))
-    h = ''
+    h = hashlib.sha256(forge_header(header).encode())
 
-    while not h.startswith('000000'):
+    while not matches_difficulty(int.from_bytes(h.digest(), 'little'), difficulty):
         pow_header['seed'] += 1
-        h = hashlib.sha256(forge_header(header).encode()).hexdigest()
-
-    print(h)
+        h = hashlib.sha256(forge_header(header).encode())
 
 
 if __name__ == "__main__":
-    do_work(pow_header, 5)
+    do_work(pow_header, 16)
+    print(pow_header)
